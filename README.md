@@ -4,5 +4,5 @@ php artisan serve
 
 para iniciar react:
 
-cd react-basic 
+cd react-basic -
 npm run dev    

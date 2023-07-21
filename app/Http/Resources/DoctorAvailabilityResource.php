@@ -22,6 +22,7 @@ class DoctorAvailabilityResource extends JsonResource
             'address' => $this->address,
             'number' => $this->number,
             'centerName' => $this->centerName,
+            'date' => $this->date,
             
             
 

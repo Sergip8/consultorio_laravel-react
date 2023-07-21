@@ -78,12 +78,12 @@ export default function Citas() {
       )
       .then(({ data }) => {
         console.log(data);
-        if (data.data.length == 0)
+        if (data.length == 0)
           setMsg({
             message: "no se encontro citas disponibles",
             type: "alert",
           });
-        setDoctorsDisp(data.data);
+        setDoctorsDisp(data);
       })
       .catch((err) => {
         const res = err.response;
@@ -109,13 +109,12 @@ export default function Citas() {
     axiosClient.post(`/citas`, citaRes)
     
     .then(({ data }) => {
-      console.log(data);
-      if (data.data.length == 0)
+     console.log(data)
+      
         setMsg({
           message: "cita agendada",
           type: "success",
         });
-      setDoctorsDisp(data.data);
     })
     .catch((err) => {
       const res = err.response;
@@ -132,8 +131,8 @@ export default function Citas() {
       <div className="user-table">
         <h1>Citas</h1>
       </div>
-       <div className="card animated fateInDown">
-        <table>
+       <div >
+        <table className="card animated fateInDown">
           <thead>
             <tr>
               <th>Id</th>
@@ -168,7 +167,7 @@ export default function Citas() {
                   <td>{p.document}</td>
                   <td>{p.documentType}</td>
                   <td>{p.email}</td>
-                  <td>
+                  <td className="checkbox">
                     <input
                       type="checkbox"
                       checked={p.id === patientSelected}
@@ -221,8 +220,8 @@ export default function Citas() {
       </form>
       <div style={{marginTop: "20px"}}>
         {doctorsDisp.length !=0 && (
-          <div>
-            <table>
+          <div >
+            <table className="card animated fateInDown">
               <thead>
                 <tr>
                   <th>cita</th>
@@ -240,12 +239,12 @@ export default function Citas() {
               )}
               {!loading && (
                 <tbody>
-                  {doctorsDisp.map((d) => (
+                {doctorsDisp?.map((d) => (
                     <tr key={d.id}>
                        <td>
                        <p>cita {d.specialization} con el doctor {d.name} en el centro {d.centerName} consultorio {d.number}</p>
                       </td>
-                      <td>
+                      <td className="checkbox">
                       <input
                       type="checkbox"
                       checked={d.id === citaSelected}
@@ -267,10 +266,10 @@ export default function Citas() {
               )}
             </table>
           
-          <button 
-         style={{marginTop: "20px"}}
-         className="btn" type="submit"
-         onClick={onSubmitAppointment}>Agendar cita</button>
+            <button 
+           style={{marginTop: "20px"}}
+           className="btn" type="submit"
+           onClick={onSubmitAppointment}>Agendar cita</button>
          </div>
           )}
       </div>

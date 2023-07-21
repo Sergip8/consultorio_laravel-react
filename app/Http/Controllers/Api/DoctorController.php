@@ -9,7 +9,9 @@ use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorAvailabilityResource;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DoctorController extends Controller
 {
@@ -60,7 +62,7 @@ class DoctorController extends Controller
     public function getDoctorsAvailable(DoctorAvailabilityRequest $request){
          
             $result = [];
-            $date = $request['date'];
+            $date = new DateTime($request['date']);
             $doctorRes = Doctor::where('specialization', $request['type'])
             ->leftJoin('citas', function($q) use($request){
                     $q->on('doctor.id', '=', 'citas.doctorId')
@@ -69,16 +71,44 @@ class DoctorController extends Controller
             ->select('doctor.id', 'citas.date')
             ->orderBy('date', 'asc')
             ->get();
-            
             foreach($doctorRes as $dr){
-                if($dr['date'] == $date){
-                    $date = date("Y-m-d H:i:s", strtotime( $date, "+20 minutes" ));
+                $flag = true;
+                if(new DateTime($dr['date']) == $date){
+                    $date = $date->modify('+20 minutes');
                     continue;
                 }
-                array_push($result, [$dr['id'], $date]);
+                foreach($result as $res){
+
+                    if($res->id == $dr['id']){
+                        $flag = false;
+                        
+                    }
+                }
+                if($flag){
+
+                    array_push($result, (object)['id' => $dr['id'], 'date' => $date->format('Y-m-d H:i:s')]);
+                        $date = new DateTime($request['date']);
+                        
+                }
 
             }
-            return $result;
+            //return $result;
+            $doctorRes = [];
+         foreach ($result as $res){
+           
+            $doctor = DB::table('doctor')
+            ->where('doctor.id', $res->id) 
+            ->join('users', 'users.id', '=', 'doctor.userId')
+            ->join('consultorio', 'consultorio.id', '=', 'doctor.consultorioId')
+            ->join('medical_center', 'consultorio.medicalCenterId', '=', 'medical_center.id')
+                 
+                
+            ->select('doctor.id', 'doctor.specialization', 'users.name', 'consultorio.number', 'medical_center.name as centerName', 'medical_center.address')
+            ->first();
+            $doctor->date = $res->date;    
+            array_push($doctorRes, new DoctorAvailabilityResource($doctor) );
+         }
+            return $doctorRes;
             // ->join('users', 'users.id', '=', 'doctor.userId')
             // ->join('consultorio', 'consultorio.id', '=', 'doctor.consultorioId')
             // ->join('medical_center', 'consultorio.medicalCenterId', '=', 'medical_center.id')

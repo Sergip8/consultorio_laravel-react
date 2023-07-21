@@ -274,8 +274,7 @@ table > tbody > tr > td {
 .btn-page:active{
     background-color: #5867d1;
 }
-.checkbox{
-   
-    width: auto;
+.checkbox > input{
+    width: 50%;
     margin-left: 10px;
 }
