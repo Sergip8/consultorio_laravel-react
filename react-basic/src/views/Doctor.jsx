@@ -91,7 +91,7 @@ export default function Doctors() {
               <td>{d.documentType}</td>
               <td>{d.userId}</td>
               <td>
-                <Link to={'/medico/'+d.id} className='btn-edit'>Edit</Link>
+                <Link to={'/dashboard/medico/'+d.id} className='btn-edit'>Edit</Link>
                 &nbsp;
                 <button onClick={e => onDelete(d)} className='btn-delete'>Eliminar</button>
               </td>

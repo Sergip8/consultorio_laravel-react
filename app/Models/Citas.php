@@ -26,6 +26,7 @@ class Citas extends Model
         'description',
         'patientId',
         'doctorId',
+        'status',
 
         
         
@@ -34,5 +35,9 @@ class Citas extends Model
         'date' => 'datetime',
         
     ];
+    public function doctor()
+    {
+       return $this->belongsTo('App\Models\Doctor'); 
+   }
 
 }

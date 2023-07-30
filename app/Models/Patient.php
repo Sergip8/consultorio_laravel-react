@@ -34,5 +34,9 @@ class Patient extends Model
         'birthDate' => 'date',
         
     ];
+    public function user()
+    {
+       return $this->belongsTo('App\Models\User'); 
+   }
   
 }

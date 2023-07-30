@@ -8,6 +8,7 @@ use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorAvailabilityResource;
 use App\Http\Resources\DoctorResource;
+use App\Http\Resources\DoctorScheduleResource;
 use App\Models\Doctor;
 use DateTime;
 use Illuminate\Http\Request;
@@ -81,28 +82,22 @@ class DoctorController extends Controller
 
                     if($res->id == $dr['id']){
                         $flag = false;
-                        
                     }
                 }
                 if($flag){
 
                     array_push($result, (object)['id' => $dr['id'], 'date' => $date->format('Y-m-d H:i:s')]);
                         $date = new DateTime($request['date']);
-                        
                 }
-
             }
             //return $result;
             $doctorRes = [];
          foreach ($result as $res){
-           
             $doctor = DB::table('doctor')
             ->where('doctor.id', $res->id) 
             ->join('users', 'users.id', '=', 'doctor.userId')
             ->join('consultorio', 'consultorio.id', '=', 'doctor.consultorioId')
             ->join('medical_center', 'consultorio.medicalCenterId', '=', 'medical_center.id')
-                 
-                
             ->select('doctor.id', 'doctor.specialization', 'users.name', 'consultorio.number', 'medical_center.name as centerName', 'medical_center.address')
             ->first();
             $doctor->date = $res->date;    
@@ -128,10 +123,36 @@ class DoctorController extends Controller
             // ->limit(10)
             // ->get());
     }
+public function getDoctorsBySpe ($spe){
+    
+       $doctor = Doctor::where('specialization', $spe)
+        ->with(['citas' => function ($query) {
+            $query->where('date', '>', date('y-m-d h:i:s'));
+           }])
+        ->join('users', 'users.id', '=', 'doctor.userId')
+        ->join('consultorio', 'consultorio.id', '=', 'doctor.consultorioId')
+        ->join('medical_center', 'consultorio.medicalCenterId', '=', 'medical_center.id')
+        ->select('doctor.specialization', 'users.name', 'doctor.id', 'doctor.telephone', 'consultorio.number', 'medical_center.name as centerName', 'medical_center.address')
+        ->get();
+        return $doctor;
+}
+
     public function destroy(Doctor $doctor)
     {
         $doctor->delete();
         return response("", 204);
+    }
+    public function getDoctorsSchedule(Request $request){
+        
+        $doctor = Doctor::where('specialization', $request->spe)
+        ->with(['citas' => function ($query) use($request) {
+            $query->where('date', '>', date('Y-m-d H:i:s', strtotime($request->date)));
+           }])
+        ->join('users', 'users.id', '=', 'doctor.userId')
+        ->select('doctor.specialization', 'users.name', 'doctor.id')
+
+        ->get();
+        return $doctor;
     }
   
 }

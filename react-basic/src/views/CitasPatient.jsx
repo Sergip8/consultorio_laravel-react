@@ -4,22 +4,22 @@ import { Link } from 'react-router-dom'
 import { useStateContext } from '../context/ContextProvider'
 import SearchBar from './SearchBar'
 
-export default function Users() {
-  const [users, setUsers] = useState([])
+export default function CitasPatient() {
+  const [citas, setCitas] = useState([])
   const [loading, setLoading] = useState(false)
-  const {setMsg, search, setSearch} = useStateContext()
+  const {setMsg, search, setSearch, user} = useStateContext()
   const [links, setLinks] = useState([])
   
   useEffect(() => {
-    getUsers()
-    console.log(users)
-  }, [])
-  const getUsers = (url = null) => {
+    getcitas()
+    console.log(citas)
+  }, [user])
+  const getcitas = () => {
     setLoading(true)
-    
-    axiosClient.get( url?  "/" +url.split("/")[4]: "/users")
+    if(user.id){
+    axiosClient.get(`/get-cita-by-userid/${user.id}`)
     .then(({data}) => {
-      setUsers(data.data)
+      setCitas(data.data)
       console.log(data)
       setLinks(data.meta.links)
       console.log(links)
@@ -30,28 +30,35 @@ export default function Users() {
     }).finally(() =>{
       setLoading(false)
     })
+}
   };
-  const onDelete = (u) =>{
-    if(!window.confirm("desea eliminar este usuario"))
-    return
-
-    axiosClient.delete(`/users/${u.id}`)
-    .then(() => {
-      setMsg({message: "el usuario se ha eliminado", type: "alert"})
-
-      getUsers()
+  const onCancel = (c) =>{
+    if(c.status === 'CANCELADO'){
+      setMsg({message: "la cita ya esta cancelada", type: "alert"})
+      return
+    }
+      if(!window.confirm("desea eliminar este usuario"))
+      return
+      c.status = 'CANCELADO'
+      console.log(c)
+    axiosClient.post(`/citas-change-status`, {id: c.id, status: c.status})
+    .then(({data}) => {
+      setMsg({message: "la cita ha sido cancelada", type: "alert"})
+        console.log(data)
+      getcitas()
     })
   }
   const onPage = (url) => {
-    getUsers(url)
+    getcitas(url)
   }
 
  
     
       if(search){
-      axiosClient.get(`/users-by-email/${search}`)
+
+      axiosClient.get(`/get-cita-by-userid/${user.id}`)
       .then(({data}) => {
-        setUsers(data.data)
+        setCitas(data.data)
         console.log(data)
         setLinks(data.meta.links)
       })
@@ -65,10 +72,10 @@ export default function Users() {
     
 
   const pagination = () => {
-    return  links.map(l => (
+    return  links.map((l,i) => (
                   
 
-      <button disabled={!l.url || l.active} onClick={e => onPage(l.url)} className='btn-page'>
+      <button key={i} disabled={!l.url || l.active} onClick={e => onPage(l.url)} className='btn-page'>
         {l.label.replace('&laquo; Previous', 'Atras').replace('Next &raquo;', 'Siguiente')}</button>
       
 
@@ -81,18 +88,19 @@ export default function Users() {
       {SearchBar()}
       </div>
     <div className='user-table'>
-      <h1>Users</h1>
-      <Link to="/dashboard/user/new" className='btn-add'>Nuevo </Link>
+      <h1>citas</h1>
+      
     </div>
       <div className='card animated fateInDown'>
         <table>
           <thead>
             <tr>
             <th>Id</th>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Fecha de registro</th>
-            <th>Rol</th>
+            <th>descripcion</th>
+            <th>Fecha</th>
+
+            <th>Estado</th>
+            
 
             <th>Acciones</th>
 
@@ -108,21 +116,21 @@ export default function Users() {
           </tbody>
 }
 {!loading && <tbody>
-           {users.map(u => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.name}</td>
-              <td>{u.email}</td>
-              <td>{u.created_at}</td>
-              <td>{u.role}</td>
+           {citas.map(c => (
+            <tr key={c.id}>
+              <td>{c.id}</td>
+              <td>{c.description}</td>
+              <td>{new Date(c.date).toLocaleString()}</td>
+
+              <td>{c.status}</td>
+              
 
               <td>
-                <Link to={'/dashboard/user/'+u.id} className='btn-edit'>Edit</Link>
+                <Link to={'/dashboard/user/'+c.id} className='btn-edit'>Cambiar</Link>
                 &nbsp;
-                <button onClick={e => onDelete(u)} className='btn-delete'>Eliminar</button>
-                &nbsp;
-                <Link to={u.role === 'PATIENT' ? '/dashboard/paciente/new/'+u.id: u.role === 'DOCTOR' ? '/dashboard/doctor/new/'+u.id: '/dashboard/user/'+u.id} className='btn-create'>Crear usuario</Link>
-
+                <button onClick={e => onCancel(c)} className='btn-delete'>Cancelar</button>
+                
+               
               </td>
 
             </tr>

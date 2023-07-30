@@ -6,10 +6,16 @@ const StateContext = createContext({
     token: null,
     msg: null,
     search: null,
+    headerDay: null,
+    showReg: null,
+    showLogin: null,
     setUser: () => {},
     setToken: () => {},
     setMsg: () => {},
-    setSearch: () => {}
+    setSearch: () => {},
+    setHeaderDay: () => {},
+    setShowLogin: () => {},
+    setShowReg: () => {},
 })
 
 export const ContextProvider = ({children}) => {
@@ -18,7 +24,10 @@ export const ContextProvider = ({children}) => {
         message: '',
         type: ''
     })
+     const [showLogin, setShowLogin] = useState(false);
+    const [showReg, setShowReg] = useState(false);
     const [search, setSearch] = useState('')
+    const [headerDay, setHeaderDay] = useState([])
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"))
     const setMsg = ({message, type}) => {
         _setMsg({message, type})
@@ -44,7 +53,13 @@ export const ContextProvider = ({children}) => {
             msg,
             setMsg,
             search,
-            setSearch
+            setSearch,
+            headerDay,
+            setHeaderDay,
+            showLogin,
+            showReg,
+            setShowLogin,
+            setShowReg
         }}>
             {children}
 

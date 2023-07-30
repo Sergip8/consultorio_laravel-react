@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
-import { Link, Navigate, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import { useStateContext } from '../context/ContextProvider'
 import axiosClient from '../axios-client'
 
 export default function DefaultLayout() {
 
     const {user, token, setUser, setToken, msg} = useStateContext()
+    const navigate = useNavigate();
 
     if(!token)
         return <Navigate to="/login" />
@@ -19,20 +20,28 @@ export default function DefaultLayout() {
         })
     }
     useEffect(() =>{
-        axiosClient.get('/user')
+      getCurrentUser()
+    }, [])
+
+    const getCurrentUser = async () =>{
+        await axiosClient.get('/user')
         .then(({data}) => {
             setUser(data)
+            if(data.role[0].role != "ADMIN")
+            navigate("/");
+        
         })
-    }, [])
+    }
   return (
     <div id="defaultLayout">
         <aside>
             <Link to="/dashboard" > Dashboard</Link>
-            <Link to="/users" > Users</Link>
-            <Link to="/pacientes" > Pacientes</Link>
-            <Link to="/consultorios" > Consultorios</Link>
-            <Link to="/medicos" > Medicos</Link>
-            <Link to="/citas" > Citas</Link>
+            <Link to="/dashboard/users" > Users</Link>
+            <Link to="/dashboard/pacientes" > Pacientes</Link>
+            <Link to="/dashboard/medicos" > Medicos</Link>
+            <Link to="/dashboard/consultorios" > Consultorios</Link>
+            <Link to="/dashboard/citas" > Citas</Link>
+            <Link to="/dashboard/agenda-medicos" > Agenda medicos</Link>
 
 
 

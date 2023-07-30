@@ -20,9 +20,15 @@ use App\Http\Controllers\Api\PatientController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+Route::middleware('auth:api')->group(function() {
+    Route::get('/user', function () {
+        return auth()->user()->load('role');
+    });
+    Route::get('/user-patient', function () {
+        return auth()->user()->load('role')->load('patient');
+    });
+    Route::get('/user-doctor', function () {
+        return auth()->user()->load('role')->load('doctor');
     });
     
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -41,6 +47,9 @@ Route::get('/patients-apptment/{search}', [PatientController::class, 'getPatient
 
 Route::apiResource('/doctors', DoctorController::class);
 Route::get('/doctors-by-cc/{cc}', [DoctorController::class, 'getDoctorsByCC']);
+Route::get('/doctorSpe/{spe}', [DoctorController::class, 'getDoctorsBySpe']);
+Route::post('/doctor-availability', [DoctorController::class, 'getDoctorsAvailable']);
+Route::get('/doctor-schedule', [DoctorController::class, 'getDoctorsSchedule']);
 
 
 
@@ -51,9 +60,19 @@ Route::get('/get-select-consult', [ConsultorioController::class, 'getConsultorio
 Route::post('/doctor-availability', [DoctorController::class, 'getDoctorsAvailable']);
 
 Route::apiResource('/citas', CitasController::class);
+Route::post('/citas-patient', [CitasController::class, 'createCita']);
+Route::get('/get-cita-by-userid/{userId}', [CitasController::class, 'getCitasByUserId']);
+Route::get('/get-cita-by-doctor-userid/{userId}', [CitasController::class, 'getCitasByDoctorUserId']);
+
+Route::post('/citas-change-status', [CitasController::class, 'updateStatus']);
+
+
+
 
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+
+
 
 

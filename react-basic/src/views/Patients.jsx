@@ -91,7 +91,7 @@ export default function Users() {
               <td>{p.documentType}</td>
               <td>{p.userId}</td>
               <td>
-                <Link to={'/paciente/'+p.id} className='btn-edit'>Edit</Link>
+                <Link to={'/dashboard/paciente/'+p.id} className='btn-edit'>Edit</Link>
                 &nbsp;
                 <button onClick={e => onDelete(p)} className='btn-delete'>Eliminar</button>
               </td>

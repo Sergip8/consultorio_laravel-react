@@ -12,17 +12,40 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 class AuthController extends Controller
 {
-   public function login(LoginRequest $request){
-    $credentials = $request->validated();
-    if(!Auth::attempt($credentials)){
-        return response([
-            "message" => "email o password incorrectos"
-        ], 422);
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login','signup']]);
     }
-    /** @var User $user */
+   public function login(LoginRequest $request){
+    $request->validated();
+    $credentials = $request->only('email', 'password');
+    
+    // if(!Auth::attempt($credentials)){
+    //     return response([
+    //         "message" => "email o password incorrectos"
+    //     ], 422);
+    // }
+    // @var User $user */
+    // $user = Auth::user();
+    // $token = $user->createToken('main')->plainTextToken;
+    $token = Auth::attempt($credentials);
+    if(!$token){
+        return response()->json([
+            'status' => 'error',
+            'message' => 'email o password incorrectos',
+        ], 401);
+    }
     $user = Auth::user();
-    $token = $user->createToken('main')->plainTextToken;
-    return response(compact('user',"token"));
+    return response()->json([
+        'status' => 'success',
+        'user' => $user,
+        'authorisation' => [
+            'token' => $token,
+            'type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]
+    ]);
    }
    public function signup(SignupRequest $request){
     $data = $request->validated();
@@ -32,15 +55,27 @@ class AuthController extends Controller
         'password' => bcrypt($data['password'])
         
     ]);
-    $token = $user->createToken('main')->plainTextToken;
-    return response(compact('user',"token"));
+    //$token = $user->createToken('main')->plainTextToken;
+    //return response(compact('user',"token"));
    }
    
    public function logout(Request $request){
-    /** @var User $user */
-    $user = $request->user();
-    $user->currentAccessToken()->delete();
-    return response("", 204);
+    Auth::logout();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'sesion cerrada',
+        ]);
+   }
+   public function refresh()
+   {
+       return response()->json([
+           'status' => 'success',
+           'user' => Auth::user(),
+           'authorisation' => [
+               'token' => Auth::refresh(),
+               'type' => 'bearer',
+           ]
+       ]);
    }
 
 

@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCitasRequest extends FormRequest
+class CitaPacienteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +21,10 @@ class UpdateCitasRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'type' => 'required|string|max:20',
+            'specialization' => 'required|string|max:20',
             'date' => 'required',
-            'slot' => 'required',
-            'description' => 'required|string|max:255',
-            'patientId' => 'required',
-            'doctorId' => 'required',
-            'status' => 'required'
+            'id' => 'required',
+          
         ];
     }
 }

@@ -7,7 +7,7 @@ export default function UserForm() {
     const {id, userId} = useParams()
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState(null)
-    const {setMsg} = useStateContext()
+    const {setMsg, user} = useStateContext()
     const navigate = useNavigate()
    
 
@@ -53,6 +53,13 @@ export default function UserForm() {
         userId: userId
     })
 
+    useEffect(() =>{
+        if(user.patient){
+            setPatient({...user.patient, birthDate: user.patient.birthDate.split("T")[0]})
+        }
+        
+    }, [user])
+
     if(id){
         useEffect(() =>{
             setLoading(true)
@@ -71,33 +78,45 @@ export default function UserForm() {
     const onSubmit = (e) =>{
         e.preventDefault()
         if(patient.id){
-            axiosClient.put(`/patients/${patient.id}`, patient)
-            .then(() => {
-                setMsg({message: "el paciente se ha actualizado correctamente", type: "success"})
-                navigate('/pacientes')
-            })
-            .catch( err => {
-                const res = err.response
-                if (res && res.status == 422)
-                 setErrors(res.data.errors)
-            })
-        }if(userId){
-            console.log(patient)
-            axiosClient.post(`/patients/`, patient)
-            .then(() => {
-                setMsg({message: "el paciente se ha creado correctamente", type: "success"})
-                navigate('/pacientes')
-            })
-            .catch( err => {
-                const res = err.response
-                setMsg({message: "el paciente no pudo registrarse", type: "error"})
-
-                console.log(err)
-                if (res && res.status == 422)
-                 setErrors(res.data.errors)
-            })
+            updatePatient(patient.id)
+           navigate('/dashboard/pacientes')
         }
+        if(user.patient.id){
+            updatePatient(user.patient.id)
+            navigate('/paciente/datos')
+        }
+        if(userId){
+            createPatient()
+           navigate('/dashboard/pacientes')
+        }
+    }
+    const createPatient = () => {
+        axiosClient.post(`/patients/`, patient)
+        .then(() => {
+            setMsg({message: "el paciente se ha creado correctamente", type: "success"})
+            
+        })
+        .catch( err => {
+            const res = err.response
+            setMsg({message: "el paciente no pudo registrarse", type: "error"})
 
+            console.log(err)
+            if (res && res.status == 422)
+             setErrors(res.data.errors)
+        })
+    }
+    const updatePatient = (patientId) => {
+        axiosClient.put(`/patients/${patientId}`, patient)
+        .then(() => {
+            
+            setMsg({message: "el paciente se ha actualizado correctamente", type: "success"})
+            
+        })
+        .catch( err => {
+            const res = err.response
+            if (res && res.status == 422)
+             setErrors(res.data.errors)
+        })
     }
 
   return (
@@ -117,13 +136,13 @@ export default function UserForm() {
             {!loading && <form onSubmit={onSubmit}>
                 <input type="text" value={patient.document}  onChange={e => setPatient({...patient, document: e.target.value})} placeholder='Documento'/>
                 <select  value={patient.documentType} onChange={e => setPatient({...patient, documentType: e.target.value})}>
-                <option selected hidden defaultValue="">Seleccione el tipo de documento</option>
+                <option  hidden defaultValue="">Seleccione el tipo de documento</option>
                 {documentType.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
                  ))}
                 </select>
                 <select name="gender" value={patient.gender} onChange={e => setPatient({...patient, gender: e.target.value})}>
-                <option selected hidden defaultValue="">Seleccione el sexo</option>
+                <option  hidden defaultValue="">Seleccione el sexo</option>
                 
                 {gender.map((option) => (
               <option key={option.value} value={option.value}>{option.label}</option>
@@ -133,7 +152,7 @@ export default function UserForm() {
                 <input type="text" value={patient.address} onChange={e => setPatient({...patient, address: e.target.value})} placeholder='Dirección'/>
                 <input type="date" defaultValue={patient.birthDate} onChange={e => setPatient({...patient, birthDate: e.target.value})} />
                 
-                <button className='btn'>Guardar</button>
+                <button className='btn-submit'>Guardar</button>
             </form>
             } 
         </div>

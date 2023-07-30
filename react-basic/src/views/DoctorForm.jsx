@@ -9,7 +9,7 @@ export default function UserForm() {
     const [errors, setErrors] = useState(null)
     const [consults, setConsults] = useState([])
 
-    const {setMsg} = useStateContext()
+    const {setMsg, user} = useStateContext()
     const navigate = useNavigate()
    
 
@@ -59,6 +59,14 @@ export default function UserForm() {
         consultorioId: 0,
         userId: userId
     })
+
+    useEffect(() =>{
+        if(user.doctor){
+            setDoctor(user.doctor)
+        }
+        
+    }, [user])
+
     useEffect(() =>{
         axiosClient.get(`/get-select-consult`)
         .then(({data}) => {
@@ -94,35 +102,40 @@ export default function UserForm() {
     const onSubmit = (e) =>{
         e.preventDefault()
         if(doctor.id){
-            axiosClient.put(`/doctors/${doctor.id}`, doctor)
-            .then(() => {
-            
-                setMsg({message: "el medico se ha actualizado correctamente", type: "success"})
-                navigate('/medicos')
-            })
-            .catch( err => {
-                const res = err.response
-                if (res && res.status == 422)
-                 setErrors(res.data.errors)
-            })
+            updateDoctor(doctor.id)
         }if(userId){
-            
-            axiosClient.post(`/doctors/`, doctor)
-            .then(() => {
-                setMsg({message: "el medico se ha creado correctamente", type: "success"})
-
-                navigate('/medicos')
-            })
-            .catch( err => {
-                const res = err.response
-                console.log(err)
-                if (res && res.status == 422)
-                 setErrors(res.data.errors)
-            })
+            createDoctor()
         }
 
     }
+const updateDoctor = (doctorId) => {
+    axiosClient.put(`/doctors/${doctorId}`, doctor)
+    .then(() => {
+    
+        setMsg({message: "el medico se ha actualizado correctamente", type: "success"})
+        navigate('/medicos')
+    })
+    .catch( err => {
+        const res = err.response
+        if (res && res.status == 422)
+         setErrors(res.data.errors)
+    })
+}
+const createDoctor = () => {
+       
+    axiosClient.post(`/doctors/`, doctor)
+    .then(() => {
+        setMsg({message: "el medico se ha creado correctamente", type: "success"})
 
+        navigate('/medicos')
+    })
+    .catch( err => {
+        const res = err.response
+        console.log(err)
+        if (res && res.status == 422)
+         setErrors(res.data.errors)
+    })
+}
    
 
   return (
@@ -165,7 +178,7 @@ export default function UserForm() {
                 <input type="text" value={doctor.professionalCard} onChange={e => setDoctor({...doctor, professionalCard: e.target.value})} placeholder='Tarjeta profesional'/>
                 
                 
-                <button className='btn'>Guardar</button>
+                <button className='btn-submit'>Guardar</button>
             </form>
             } 
         </div>

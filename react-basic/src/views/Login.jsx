@@ -7,7 +7,7 @@ export default function Login() {
     const emailRef = useRef()
     const passwordRef = useRef()
     const [errors, setErrors] = useState(null)
-    const {setUser, setToken} = useStateContext()
+    const {setUser, setToken, setShowLogin} = useStateContext()
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -19,7 +19,9 @@ export default function Login() {
         axiosClient.post('/login', payload)
         .then(({data}) => {
             setUser(data.user)
-            setToken(data.token)
+            setShowLogin(false)
+            console.log(data)
+            setToken(data.authorisation.token)
         }).catch( err => {
             const res = err.response
             console.log(err)
@@ -38,7 +40,7 @@ export default function Login() {
     <div className='login-signup-form animated fadeInDown'>
         <div className='form'>
             <form onSubmit={onSubmit}>
-                <h1 className='title'>Login</h1>
+                
                 {errors && <div className='alert'>
                 {Object.keys(errors).map(key => (
                     <p key={key}>{errors[key][0]}</p>
@@ -48,9 +50,7 @@ export default function Login() {
                 <input ref={emailRef} type="text" placeholder='Email'/>
                 <input ref={passwordRef} type="password" placeholder='Password'/>
                 <button className='btn btn-block'>Login</button>
-                <p>
-                    No esta registrado? <Link to="/signup">Crea una cuenta</Link>
-                </p>
+               
             </form>
 
         </div>

@@ -225,7 +225,7 @@ export default function Citas() {
               <thead>
                 <tr>
                   <th>cita</th>
-                  <th>select</th>
+                  <th>seleccionar</th>
                 </tr>
               </thead>
               {loading && (

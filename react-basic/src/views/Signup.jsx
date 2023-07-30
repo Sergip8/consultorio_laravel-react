@@ -11,7 +11,7 @@ export default function Signup() {
     const [errors, setErrors] = useState(null)
     const navigate = useNavigate()
 
-    const {setUser, setToken} = useStateContext()
+    const {setUser, setShowReg, setShowLogin} = useStateContext()
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -24,7 +24,8 @@ export default function Signup() {
         axiosClient.post('/signup', payload)
         .then(({data}) => {
             setUser(data.user)
-            navigate('/login')
+            setShowReg(false)
+            setShowLogin(true)
         }).catch( err => {
             const res = err.response
             console.log(err)
@@ -37,7 +38,7 @@ export default function Signup() {
     <div className='login-signup-form animated fadeInDown'>
     <div className='form'>
         <form onSubmit={onSubmit}>
-            <h1 className='title'>Registrarse</h1>
+            
             {errors && <div className='alert'>
                 {Object.keys(errors).map(key => (
                     <p key={key}>{errors[key][0]}</p>
@@ -50,9 +51,7 @@ export default function Signup() {
             <input ref={repasswordRef} type="password" placeholder='Confirmar password'/>
 
             <button className='btn btn-block'>Registrar</button>
-            <p>
-                Ya esta registrado ? <Link to="/login">Loguearse</Link>
-            </p>
+          
         </form>
 
     </div>

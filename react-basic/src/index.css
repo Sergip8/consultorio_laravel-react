@@ -3,7 +3,7 @@
 * {
     box-sizing: border-box;
 }
-html, body, #root, #defaultLayout, #guestLayout {
+html, body, #root, #defaultLayout, #guestLayout, #patientLayout {
     min-height: 100vh;
 }
 
@@ -25,7 +25,7 @@ input, select, textarea {
     background: #ffffff;
     width: 100%;
     border: 2px solid #e6e6e6;
-    margin: 0 0 15px;
+    margin: 0 0 15px !important;
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
@@ -42,18 +42,19 @@ textarea:focus {
     border-color: #5b08a7;
 }
 
-.btn,
+.btn-submit, 
 .btn-add,
 .btn-edit,
 .btn-create,
-.btn-delete {
+.btn-delete,
+.btn-block {
     font-family: "Roboto", sans-serif;
     outline: 0;
-    background: #5b08a7;
+    background: #9545e0;
     border: 0;
     text-decoration: none;
     padding: 15px;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     font-size: 16px;
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
@@ -62,6 +63,8 @@ textarea:focus {
 
 .btn-block {
     width: 100%;
+    background: #5b08a7 !important;
+
 }
 .btn-create,
 .btn-add,
@@ -80,6 +83,9 @@ textarea:focus {
 .btn-create{
     background-color: #5867d1;
 }
+.btn-edit{
+    background-color: #937b00;
+}
 
 .btn-logout {
     text-decoration: none;
@@ -92,11 +98,11 @@ textarea:focus {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.btn:hover,
-.btn:active,
-.btn:focus {
+.btn-submit:hover,
+.btn-submit:active,
+.btn-submit:focus {
     background: #5b08a7;
-}
+} */
 
 .text-center {
     text-align: center;
@@ -157,7 +163,7 @@ table > tbody > tr > td {
 /* Login/Signup forms*/
 
 .login-signup-form {
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -170,7 +176,7 @@ table > tbody > tr > td {
     background: #FFFFFF;
     max-width: 360px;
     padding: 34px;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1); */
 }
 
 .login-signup-form .title {
@@ -194,17 +200,17 @@ table > tbody > tr > td {
 /* Login/Signup form */
 
 
-#defaultLayout {
+#patientLayout, #defaultLayout {
     display: flex;
 }
 
-#defaultLayout aside {
+#patientLayout aside, #defaultLayout aside {
     width: 240px;
     background-color: #5b08a7;
     padding: 1rem
 }
 
-#defaultLayout aside > a {
+#patientLayout aside > a, #defaultLayout aside > a {
     display: block;
     padding: 0.75rem 1rem;
     border-radius: 6px;
@@ -213,15 +219,15 @@ table > tbody > tr > td {
     transition: all 0.2s;
 }
 
-#defaultLayout aside > a:hover {
+#patientLayout aside > a:hover,#defaultLayout aside > a:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-#defaultLayout .content {
+#patientLayout .content,#defaultLayout .content {
     flex: 1;
 }
 
-#defaultLayout header {
+#patientLayout header,#defaultLayout header {
     height: 80px;
     padding: 2rem 3rem;
     background-color: white;
@@ -231,7 +237,7 @@ table > tbody > tr > td {
     align-items: center;
 }
 
-#defaultLayout main {
+#patientLayout main,#defaultLayout main {
     padding: 2rem;
 }
 
@@ -278,3 +284,442 @@ table > tbody > tr > td {
     width: 50%;
     margin-left: 10px;
 }
+.avaiable {
+    float:left;
+   
+    
+  }
+  .no-available{
+    background-color: rgb(83, 97, 255);
+    padding: 5px;
+    margin: 5px;
+    color: rgb(249, 249, 249);
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  
+  .show-btn{
+    text-align: center;
+  
+  }
+  .show-btn button{
+    border: none;
+    background-color: rgb(230, 252, 235);
+  color: rgb(119, 166, 255);
+  width: 250px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
+  }
+  
+    .slot{
+      background-color: #ede2ff;;
+      padding: 5px;
+      margin: 5px;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      width: 88px;
+  
+    }  
+    .slot:hover{
+        background-color: #5b08a7;
+        color: #e1faff;
+    }
+    
+      .block{
+       display: flex;
+        
+      
+       justify-content: center;
+       color: rgb(0, 21, 255);
+      }
+      .header-container {
+        display: flex;
+        justify-content: end;
+        width: 50%;
+       top: 10px;
+       right: 25%;
+       position: fixed;
+       background-color: #f9f9f9;
+      padding: 10px;
+     
+
+        
+      }
+      .header-container> div > button{
+        font-weight: 700;
+        font-size: 28px;
+        border: none;
+        cursor: pointer;
+        background-color: #f9f9f9;
+      }
+      .header {
+        display: flex;
+        max-width: fit-content;
+        justify-content: center;
+      }
+      .day {
+        width: 88px;
+        margin-left: 5px;
+        margin-right: 5px;
+        text-align: center;
+      }
+      /* button{
+        padding: 3px 11px 8px 11px;
+        background-color: rgb(220, 255, 233);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        color: rgb(156, 164, 255);
+       
+      }
+      button:hover{
+        background-color: rgb(167, 253, 198);
+        
+      }
+      button:disabled{
+        background-color: rgb(240, 255, 236);
+        color: rgb(231, 233, 255);
+        cursor: not-allowed;
+      } */
+      .doctor-slots-container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #ccc;
+        margin-top: 60px;
+        padding: 20px;
+
+      }
+      .container-slots{
+        
+        margin-left: 25%;
+        margin-right: 25%;
+        margin-top: 100px;
+        
+      }
+      .doctor-slots{
+        padding-right: 10px;
+      }
+      .doctor-card{
+        padding: 5px;
+        
+      }
+      .doctor-card-header{
+        padding: 10px 20px 10px 20px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+      }
+      .doctor-card-header>div>img{
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .doctor-card-body{
+        padding: 10px 20px 10px 20px;
+        
+      }
+
+
+      /* ////////////Header home////////////// */
+      
+header{
+    justify-content: center;
+    border-bottom: 1px solid #ccc;
+    position: fixed;
+    width: 100%;
+    z-index: 990;
+    top: 0;
+    background-color:rgb(241, 245, 255);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,.3);
+ }
+      
+   #nav-header, li a{
+     color: #404040 !important;
+     
+   }
+ 
+ .nav-header, li a:hover{
+   color: #006dda !important;
+   
+ }
+ 
+ .logo a{
+   font-size: 20px;
+   font-style: italic;
+   color: #006dda;
+   
+  
+ }
+ .logo a:hover  {
+ transform: scale(1.05);
+ 
+ }
+ 
+ #services {
+   background-color: #fff;
+   position:absolute;
+   z-index: 2;
+ 
+   min-width: fit-content;
+  
+   max-width: 13%;
+   top: 55px;
+   
+   max-height: 0;
+   overflow: hidden;
+   transition: max-height 0.5s, overflow 0s;
+ }
+ #services:hover {
+   overflow: visible;
+   background-color: #fff;
+   max-height: 200px;
+ }
+ li {
+  text-decoration: none;
+   color: black;
+   padding: 8px;
+   font-size: 15px;
+   list-style: none;
+ }
+ #services > ul{
+    padding-left: 10px;
+    padding-right: 10px;
+ }
+ #services ul li a {
+   color: #555 !important;
+   text-decoration: none;
+   
+  
+ }
+ #services ul li a:hover {
+   padding: 2px;
+  
+ }
+ 
+ .nav > li:nth-child(1):hover ~ #services {
+   max-height: 200px;
+   overflow: -moz-hidden-unscrollable;
+   transition: max-height 0.5s, overflow 0.5s 0.5s;
+   
+ }
+ 
+ .nav > li {
+   font-size: 15px;
+   padding-left: 0;
+   
+ }
+
+
+
+ /* //////////////carousel//////////////////*/
+
+ .carousel{
+  margin-top: 50px;
+ height: 450px;
+margin-bottom: 20px;
+ }
+
+ 
+ .modal-footer{
+
+    justify-content: center;
+    flex-direction: column;
+ }
+ .modal-footer button{
+    width: 200px;
+ }
+ .modal-footer div a{
+    text-decoration: underline;
+ }
+ .cards {
+    position: relative;
+   
+  }
+  .card {
+    border: none !important;
+    overflow: hidden;
+    box-shadow: none ;
+  }
+  .card-img-top {
+    width: 100% !important;
+  }
+  .card-body {
+    background-color: #d8e9f8;
+  }
+  .card-body a:hover{
+    color: #205af9 !important;
+    font-size: 1.05rem;
+  }
+  .hide-faq{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+  }
+  .show-faq{
+    max-height: 300px;
+    transition: max-height 0.5s ease-in;
+  }
+
+
+  .card-img-overlay {
+    transform: translateY(80%);
+    color: black !important;
+    transition: transform 0.4s ease-in;
+  
+    background-color: rgba(220, 220, 220, 0.4);
+  }
+  .title-news {
+    color: #000000 !important;
+    margin-bottom: 11px !important;
+  }
+  
+  .card-img-overlay .text-news {
+    opacity: 0;
+    transform: translateY(-5rem);
+    transition: opacity 0.05s ease-in, transform 0.25s ease-in;
+  }
+  .card-img-overlay .btn-news {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  
+  .card-news {
+    overflow: hidden;
+    background-color: #345;
+    background-color: transparent !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .card-news:hover .card-img {
+    mix-blend-mode: darken;
+    background-color: rgba(77, 77, 77, 0.5);
+  }
+  .card-news:hover .card-img-overlay {
+    transform: translateY(0);
+    transition: transform 0.4s ease-out;
+    background-color: rgba(254, 254, 254, 0.8);
+  }
+  .card-news:hover .text-news {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+  }
+  .card-news:hover .btn-news {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.7s ease-out, transform 0.8s ease-out;
+  }
+  .cards-news {
+    width: 100% !important;
+  }
+  .user-menu{
+    background-color: #fff;
+    position:absolute;
+    z-index: 2;
+    margin-top: 5px;
+    min-width: fit-content;
+   width: 100px;
+    text-align: start;
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s, overflow 0s;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  .user-menu div a{
+    text-decoration: none;
+    color: #212121;
+    padding: 10px;
+  }
+  .menu{
+    cursor: pointer;
+   
+  }
+  .menu:hover .user-menu{
+    overflow: visible;
+    background-color: #fff;
+    max-height: 200px;
+  }
+
+
+  /*/////////////////Doctor Schedule ////////////////*/
+
+  .schedule-header{
+    margin-top: 100px;
+  }
+  #schedule {
+ 
+    height: 50%;
+    display: flex;
+    width: fit-content;
+  }
+  #schedule .days {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 50%;
+    
+    text-align: center;
+   
+  }
+  
+  #schedule .slots {
+    width: 100px;
+    /* margin-top: 2.6%; */
+    grid-column: 1 / -1;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    
+  }
+  .days-side{
+    text-align: center;
+    border-top: 1px solid transparent;
+    
+  }
+  
+  #schedule .day-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    
+  }
+  .days-header {
+    margin-bottom: 20px;
+    font-weight: bold;
+    
+  }
+  
+  .table{
+    width: 100%;
+    height: 100%; 
+    margin-bottom: 0;
+    
+  }
+  .free-slot:hover{
+    border: 1px solid;
+    
+  }
+  .ocupado{
+    
+    background: aquamarine;
+    z-index: 1;
+    
+  }
+  .free-slot{
+    border-top: 1px solid #ccc;
+
+  }
+  
+  .schedule-table{
+    float: left;
+  }
+
+.doctor-schedule{
+    text-align: center;
+    margin-bottom: 20px;
+    border-right: 1px solid #a8a8a8;
+  }
+

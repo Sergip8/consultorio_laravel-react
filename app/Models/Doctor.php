@@ -32,5 +32,13 @@ class Doctor extends Model
         
     ];
 
-  
+    public function citas()
+   {
+      return $this->hasMany('App\Models\Citas','doctorId', 'id');
+   }
+   public function user()
+   {
+      return $this->belongsTo('App\Models\User'); 
+  }
+ 
 }

@@ -104,7 +104,7 @@ export default function UserForm() {
               <option key={option.value} value={option.value}>{option.label}</option>
                  ))}
                 </select>
-                <button className='btn'>Guardar</button>
+                <button className='btn-submit'>Guardar</button>
             </form>
             } 
         </div>
