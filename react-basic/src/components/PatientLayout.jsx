@@ -32,8 +32,10 @@ export default function PatientLayount() {
     <div id='patientLayout'>
  <aside>
  
-            <Link to="/paciente/datos" > datos personales</Link>
-            <Link to="/paciente/citas" > citas</Link>
+            <Link to="/paciente/datos" > Datos Personales</Link>
+            <Link to="/paciente/citas" > Citas</Link>
+            <Link to="/" > Inicio</Link>
+            
 
 
 
@@ -49,7 +51,7 @@ export default function PatientLayount() {
         </div>
 
             </header>
-            <main>
+            <main className='dashboard-content'>
 
         <Outlet />
             </main>

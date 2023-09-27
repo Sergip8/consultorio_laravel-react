@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 import { useStateContext } from '../context/ContextProvider'
 import axiosClient from '../axios-client'
 export default function GuestLayout() {
-    const {token, setUser, msg} = useStateContext()
-
+    const {token, setUser, msg, user} = useStateContext()
+    const navigate = useNavigate()
     // if(token){
     //     return <Navigate to="/home" />
     // }
     useEffect(() =>{
-      axiosClient.get('/user')
-      .then(({data}) => {
-          setUser(data)
-          console.log(data)
-      })
-  }, [])
+      if(token){
+    getCurrentUser()
+    }
+  }, [token])
+  const getCurrentUser = async () =>{
+    await axiosClient.get('/user')
+    .then(({data}) => {
+        setUser(data)
+       
+    })
+}
+
+
   return (
     <div>
         <main>

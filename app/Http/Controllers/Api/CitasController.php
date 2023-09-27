@@ -12,6 +12,8 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\returnSelf;
+
 class CitasController extends Controller
 {
     /**
@@ -19,16 +21,10 @@ class CitasController extends Controller
      */
     public function index()
     {
-        //
+        return CitaResource::collection(
+            Citas::query()->orderBy('id', 'desc')->paginate());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -49,7 +45,7 @@ class CitasController extends Controller
      */
     public function show(Citas $citas)
     {
-        //
+        return new CitaResource($citas);
     }
 
     /**
@@ -66,16 +62,18 @@ class CitasController extends Controller
     public function update(UpdateCitasRequest $request, Citas $citas)
     {
             
-            $cita = Citas::find($request->id);
-            $cita->status = 'CANCELADO';
-            $cita->save();
+            // $cita = Citas::find($request->id);
+            // $cita->status = 'CANCELADO';
+            // $cita->save();
            
        
     }
     public function updateStatus(UpdateStatusCitaRequest $req){
         $cita = Citas::find($req->id);
         $cita->status = $req->status;
+        $cita->timestamps = false;
         $cita->save();
+        return $cita;
     }
 
     /**
@@ -95,7 +93,7 @@ class CitasController extends Controller
             ->join('medical_center', 'consultorio.medicalCenterId', '=', 'medical_center.id')
             ->select('doctor.id', 'doctor.specialization', 'users.name', 'consultorio.number', 'medical_center.name as centerName', 'medical_center.address')
             ->first();
-        Citas::query()->create([
+        return Citas::query()->create([
             'doctorId' => $req['id'],
             'patientId' => $patient['id'],
             'type' => $req['specialization'],
@@ -107,14 +105,16 @@ class CitasController extends Controller
     }
     public function getCitasByUserId($userId) {
         $patient = Patient::where('userId', $userId)->first();
-        return CitaResource::collection(
-            Citas::where('patientId', $patient['id'])
-            
-            ->orderBy('date', 'desc')->paginate(10));
+        $citas = CitaResource::make(
+            Citas::with('tratamientos.medicamento')->where('patientId', $patient['id']))
+             //->join('medicamentos', 'medicamentos.id', '=', 'tratamientos.medicamentoId')
+            ->orderBy('date', 'desc')->paginate(10);
+        return $citas;
     }
     public function getCitasByDoctorUserId($userId){
         $doctor = Doctor::where('userId', $userId)->first();
         return Citas::where('doctorId', $doctor['id'])
+            ->where('citas.status','ASIGNADO')
             ->join('patients', 'patients.id', '=', 'citas.patientId')
             ->join('users', 'users.id', '=', 'patients.userId')
             ->select('citas.id', 'citas.date', 'citas.description', 'users.name', 'patients.id as patientId', 'patients.documentType', 'patients.document')            

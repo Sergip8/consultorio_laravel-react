@@ -6,6 +6,8 @@ use App\Models\Patient;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Resources\PatientResource;
+use App\Http\Resources\PatientByCCResource;
+
 
 class PatientController extends Controller
 {
@@ -76,7 +78,7 @@ class PatientController extends Controller
             ->orderBy('id', 'desc')->paginate(10));
     }
     public function getPatientByCCForAppointment($cc){
-        return PatientResource::collection(
+        return PatientByCCResource::collection(
             Patient::where('document', 'LIKE', $cc.'%')->join('users', 'users.id', '=', 'patients.userId')
             ->select('patients.*', 'users.name', 'users.email')
             ->limit(10)

@@ -105,7 +105,7 @@ export default function ConsultorioForm() {
                 }
             {!loading && <form onSubmit={onSubmit}>
                 <label>Habilitar</label>
-                <input className='checkbox' type="checkbox" checked={consultorio.enable} onChange={e => setConsultorio({...consultorio, enable: e.target.checked})} />
+                <input className='checkbox-consul' type="checkbox" checked={consultorio.enable} onChange={e => setConsultorio({...consultorio, enable: e.target.checked})} />
                 <input type="text" value={consultorio.number} onChange={e => setConsultorio({...consultorio, number: e.target.value})} placeholder='Numero consultorio'/>
                 <select  defaultValue={consultorio.type} onChange={e => setConsultorio({...consultorio, type: e.target.value})}>
                 <option hidden >Seleccione el tipo</option>

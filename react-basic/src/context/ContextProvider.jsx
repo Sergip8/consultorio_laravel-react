@@ -9,6 +9,8 @@ const StateContext = createContext({
     headerDay: null,
     showReg: null,
     showLogin: null,
+    placeholder: null, 
+    loading: null,
     setUser: () => {},
     setToken: () => {},
     setMsg: () => {},
@@ -16,6 +18,8 @@ const StateContext = createContext({
     setHeaderDay: () => {},
     setShowLogin: () => {},
     setShowReg: () => {},
+    setPlaceholder: () => {},
+    setLoading: () => {},
 })
 
 export const ContextProvider = ({children}) => {
@@ -27,6 +31,9 @@ export const ContextProvider = ({children}) => {
      const [showLogin, setShowLogin] = useState(false);
     const [showReg, setShowReg] = useState(false);
     const [search, setSearch] = useState('')
+    const [placeholder, setPlaceholder] = useState('Ingrese el numero de identidad')
+    const [loading, setLoading] = useState(false)
+
     const [headerDay, setHeaderDay] = useState([])
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"))
     const setMsg = ({message, type}) => {
@@ -59,7 +66,9 @@ export const ContextProvider = ({children}) => {
             showLogin,
             showReg,
             setShowLogin,
-            setShowReg
+            setShowReg,
+            setPlaceholder,
+            placeholder
         }}>
             {children}
 

@@ -145,14 +145,42 @@ public function getDoctorsBySpe ($spe){
     public function getDoctorsSchedule(Request $request){
         
         $doctor = Doctor::where('specialization', $request->spe)
-        ->with(['citas' => function ($query) use($request) {
-            $query->where('date', '>', date('Y-m-d H:i:s', strtotime($request->date)));
-           }])
+        // ->with(['citas' => function ($query) use($request) {
+        //     $query->where('date', '>', date('Y-m-d H:i:s', strtotime($request->date)));
+        //    }])
         ->join('users', 'users.id', '=', 'doctor.userId')
         ->select('doctor.specialization', 'users.name', 'doctor.id')
 
         ->get();
         return $doctor;
+    }
+    public function getDoctorsScheduleCC(Request $request){
+        $doctor = Doctor::where('document', 'LIKE', $request->spe.'%')
+        // ->with(['citas' => function ($query) use($request) {
+        //     $query->where('date', '>', date('Y-m-d H:i:s', strtotime($request->date)));
+        //    }])
+        ->join('users', 'users.id', '=', 'doctor.userId')
+        ->select('doctor.specialization', 'users.name', 'doctor.id')
+
+        ->get();
+        return $doctor;
+    }
+    public function getDoctorsAppointmentByDoctorId(Request $request){
+        //return date('Y-m-d', strtotime($request->dateC. ' - 1 days'));
+        $res = [];
+        foreach ($request->doctorsId as $r){
+            $doctor = Doctor::where( 'doctor.id', $r)
+            ->with(['citas' => function ($query) use($request) {
+                $query->where('date', '>', date('Y-m-d', strtotime($request->dateC. ' - 1 days')));
+               }])
+            ->join('users', 'users.id', '=', 'doctor.userId')
+            ->select('doctor.specialization', 'users.name', 'doctor.id')
+    
+            ->first();
+            
+            array_push($res, $doctor);
+        }
+        return $res;
     }
   
 }

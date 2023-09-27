@@ -21,7 +21,7 @@ import Home from "./views/home"
 import PatientLayout from "./components/PatientLayout"
 import CitasPatient from "./views/CitasPatient"
 import DoctorLayout from "./components/DoctorLayout"
-import CitasDoctor from "./views/CitasDoctor"
+import Tratamiento from "./views/Tratamiento"
 import DoctorsSchedule from "./views/DoctorsSchedule"
 import DoctorScheduleHeader from "./views/DoctorScheduleHeader"
 
@@ -79,7 +79,7 @@ const router = createBrowserRouter([
 {path: "/medico", element: <DoctorLayout />, children:[
 
     {path: "/medico/datos", element: <DoctorForm />},
-    {path: "/medico/citas", element: <CitasDoctor />},
+    {path: "/medico/tratamiento", element: <Tratamiento />},
 
 
 ]},

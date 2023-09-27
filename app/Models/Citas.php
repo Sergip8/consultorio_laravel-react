@@ -27,7 +27,7 @@ class Citas extends Model
         'patientId',
         'doctorId',
         'status',
-
+        'tratamientos'
         
         
     ];
@@ -38,6 +38,10 @@ class Citas extends Model
     public function doctor()
     {
        return $this->belongsTo('App\Models\Doctor'); 
+   }
+   public function tratamientos()
+   {
+      return $this->hasMany('App\Models\Tratamiento','citasId', 'id');
    }
 
 }

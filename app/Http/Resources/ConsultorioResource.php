@@ -21,7 +21,7 @@ class ConsultorioResource extends JsonResource
             'enable' => $this->enable,
             'type' => $this->type,
             'description' => $this->description,
-            'name' => $this->name,
+            
            
         ];
     }

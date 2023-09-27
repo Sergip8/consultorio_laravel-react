@@ -17,9 +17,12 @@ export default function DefaultLayout() {
         .then(() => {
             setUser({})
             setToken(null)
+            //Navigate ({to: "/"}) 
         })
+        
     }
     useEffect(() =>{
+      if(token)  
       getCurrentUser()
     }, [])
 
@@ -42,23 +45,20 @@ export default function DefaultLayout() {
             <Link to="/dashboard/consultorios" > Consultorios</Link>
             <Link to="/dashboard/citas" > Citas</Link>
             <Link to="/dashboard/agenda-medicos" > Agenda medicos</Link>
-
-
-
+            <Link to="/" > Inicio</Link>
 
         </aside>
         <div className='content'>
             <header>
-        <div>
-            Header
-        </div>
-        <div>
-           {user.name}
-           <a href="#" onClick={onLogout} className='btn-logout'>Logout</a>
+      
+        <div >
+            <span className='userName'>Hola {user.name}</span>
+           
+           <a href="/" onClick={onLogout} className='btn-logout'>Logout</a>
         </div>
 
             </header>
-            <main>
+            <main className='dashboard-content'>
 
         <Outlet />
             </main>

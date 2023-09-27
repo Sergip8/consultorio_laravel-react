@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
+use Lcobucci\JWT\Signer\None;
+
 class AuthController extends Controller
 {
 
@@ -18,8 +20,15 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','signup']]);
     }
    public function login(LoginRequest $request){
-    $request->validated();
-    $credentials = $request->only('email', 'password');
+   
+
+        $credentials =  $request->validated();
+   
+
+   
+   
+
+    //$credentials = $request->only('email', 'password');
     
     // if(!Auth::attempt($credentials)){
     //     return response([
@@ -33,16 +42,19 @@ class AuthController extends Controller
     if(!$token){
         return response()->json([
             'status' => 'error',
-            'message' => 'email o password incorrectos',
-        ], 401);
+            'message' => 'Email o password incorrectos',
+            'user' => NULL,
+            'authorisation' => NUll
+        ],401);
     }
     $user = Auth::user();
     return response()->json([
         'status' => 'success',
+        'message' => 'Usuario Autenticado',
         'user' => $user,
         'authorisation' => [
             'token' => $token,
-            'type' => 'bearer',
+            'type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]
     ]);
@@ -55,6 +67,7 @@ class AuthController extends Controller
         'password' => bcrypt($data['password'])
         
     ]);
+    return $user;
     //$token = $user->createToken('main')->plainTextToken;
     //return response(compact('user',"token"));
    }

@@ -58,8 +58,8 @@ export default function Consultorio() {
   return (
     <div>
     <div className='user-table'>
-      <h1>Users</h1>
-      <Link to="/consultorios/new/1" className='btn-add'>Nuevo </Link>
+      <h1>Consultorios</h1>
+      <Link to="/dashboard/consultorios/new/1" className='btn-add'>Nuevo </Link>
     </div>
       <div className='card animated fateInDown'>
         <table>
@@ -94,7 +94,7 @@ export default function Consultorio() {
              
 
               <td>
-                <Link to={'/consultorios/'+c.id} className='btn-edit'>Edit</Link>
+                <Link to={'/dashboard/consultorios/'+c.id} className='btn-edit'>Edit</Link>
                 &nbsp;
                 <button onClick={e => onDelete(c)} className='btn-delete'>Eliminar</button>
                 

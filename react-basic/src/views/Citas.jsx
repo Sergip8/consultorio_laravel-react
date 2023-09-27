@@ -7,14 +7,16 @@ import Calendar from "react-calendar";
 export default function Citas() {
   const [patient, setPatient] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { setMsg, search, setSearch } = useStateContext();
+  const { setMsg, search, setSearch, setPlaceholder } = useStateContext();
   const [patientSelected, setPatientSelected] = useState(null);
   const [citaSelected, setCitaSelected] = useState(null);
+
+  
   const [citaRes, setCitaRes] = useState({
     type: "",
     patientId: "",
     doctorId: "", 
-    date: "",
+    date: new Date,
     description: "",
     slot: 20
   });
@@ -24,7 +26,7 @@ export default function Citas() {
   const [cita, setCita] = useState({
     patientId: 0,
     type: "",
-    date: "",
+    date: new Date,
     time: "",
   });
   const type = [
@@ -47,6 +49,7 @@ export default function Citas() {
   ];
 
   useEffect(() => {
+    setPlaceholder("Ingrese el numero de identidad del paciente")
     slotList();
   }, []);
 
@@ -254,7 +257,7 @@ export default function Citas() {
                           description:`${d.specialization} con el doctor ${d.name} 
                           en el centro ${d.centerName} consultorio ${d.number}`, 
                           patientId: cita.patientId,
-                          date: cita.date.toISOString().split("T")[0] + " " + cita.time + ":00"});
+                          date: new Date (cita.date.toISOString().split("T")[0] + " " + cita.time + ":00")});
                         setCitaSelected((prev) => (d.id === prev ? null : d.id));
                       }}
                     />

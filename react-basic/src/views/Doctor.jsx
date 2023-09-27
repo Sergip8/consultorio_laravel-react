@@ -7,10 +7,11 @@ import SearchBar from './SearchBar'
 export default function Doctors() {
   const [doctor, setDoctor] = useState([])
   const [loading, setLoading] = useState(false)
-  const {setMsg, search, setSearch} = useStateContext()
+  const {setMsg, search, setSearch, setPlaceholder} = useStateContext()
   
 
   useEffect(() => {
+    setPlaceholder("Ingrese el numero de identidad del doctor")
     getUsers()
   }, [])
   const getUsers = () => {
@@ -55,11 +56,11 @@ export default function Doctors() {
 
   return (
     <div>
+      <h1>Medicos</h1>
         <div>
       {SearchBar()}
       </div>
     <div className='user-table'>
-      <h1>Users</h1>
     
     </div>
       <div className='card animated fateInDown'>

@@ -32,24 +32,23 @@ export default function DoctorLayout() {
     <div id='patientLayout'>
  <aside>
  
-            <Link to="/medico/datos" > datos personales</Link>
-            <Link to="/medico/citas" > citas</Link>
+            <Link to="/medico/datos" > Datos Personales</Link>
+            <Link to="/medico/tratamiento" > Tratamiento</Link>
 
 
 
         </aside>
         <div className='content'>
             <header>
-        <div>
-            Header
-        </div>
-        <div>
-           {user.name}
-           <a href="#" onClick={onLogout} className='btn-logout'>Logout</a>
+        
+        <div >
+            <span className='userName'>Hola {user.name}</span>
+           
+           <Link to="/" onClick={onLogout} className='btn-logout'>Logout</Link>
         </div>
 
             </header>
-            <main>
+            <main className='dashboard-content'>
 
         <Outlet />
             </main>

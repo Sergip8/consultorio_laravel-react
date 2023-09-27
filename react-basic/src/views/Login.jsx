@@ -1,6 +1,6 @@
 
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import {useNavigate } from 'react-router-dom'
 import axiosClient from '../axios-client'
 import { useStateContext } from '../context/ContextProvider'
 export default function Login() {
@@ -8,6 +8,7 @@ export default function Login() {
     const passwordRef = useRef()
     const [errors, setErrors] = useState(null)
     const {setUser, setToken, setShowLogin} = useStateContext()
+    const navigate = useNavigate()
 
     const onSubmit = (e) => {
         e.preventDefault()
@@ -22,6 +23,7 @@ export default function Login() {
             setShowLogin(false)
             console.log(data)
             setToken(data.authorisation.token)
+            navigate("/")
         }).catch( err => {
             const res = err.response
             console.log(err)

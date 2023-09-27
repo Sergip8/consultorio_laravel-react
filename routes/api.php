@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\ConsultorioController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\MedicamentosController;
+use App\Http\Controllers\Api\TratamientoController;
+use App\Http\Controllers\MedicalCenterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,24 +35,44 @@ Route::middleware('auth:api')->group(function() {
     });
     
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::apiResource('/users', UserController::class);
     Route::get('/users-by-email/{search}', [UserController::class, 'getUsersByEmail']);
-
-
+    
+    
 });
 
+Route::apiResource('/users', UserController::class)
+->name('index', 'users.index')
+->name('show', 'users.show')
+->name("store", 'users.store')
+->name('update', 'users.update');
     
-Route::apiResource('/patients', PatientController::class);
+Route::apiResource('/patients', PatientController::class)
+->name('index', 'patients.index')
+->name('show', 'patients.show')
+->name("store", 'patients.store')
+->name('update', 'patients.update');
+
 Route::get('/patients-by-cc/{cc}', [PatientController::class, 'getPatientByCC']);
 Route::get('/patients-apptment/{search}', [PatientController::class, 'getPatientByCCForAppointment']);
 
 
 
-Route::apiResource('/doctors', DoctorController::class);
+Route::apiResource('/doctors', DoctorController::class)
+->name('index', 'doctors.index')
+->name('show', 'doctors.show')
+->name("store", 'doctors.store')
+->name('update', 'doctors.update');
+
 Route::get('/doctors-by-cc/{cc}', [DoctorController::class, 'getDoctorsByCC']);
 Route::get('/doctorSpe/{spe}', [DoctorController::class, 'getDoctorsBySpe']);
 Route::post('/doctor-availability', [DoctorController::class, 'getDoctorsAvailable']);
 Route::get('/doctor-schedule', [DoctorController::class, 'getDoctorsSchedule']);
+Route::get('/doctor-schedule-cc', [DoctorController::class, 'getDoctorsScheduleCC']);
+Route::get('/doctor-dates', [DoctorController::class, 'getDoctorsAppointmentByDoctorId']);
+
+
+Route::apiResource('/medicalCenter', MedicalCenterController::class)
+->name('store', 'center.store');
 
 
 
@@ -60,18 +83,20 @@ Route::get('/get-select-consult', [ConsultorioController::class, 'getConsultorio
 Route::post('/doctor-availability', [DoctorController::class, 'getDoctorsAvailable']);
 
 Route::apiResource('/citas', CitasController::class);
-Route::post('/citas-patient', [CitasController::class, 'createCita']);
+Route::post('/citas-patient', [CitasController::class, 'createCita'])
+->name('citas.patient');
 Route::get('/get-cita-by-userid/{userId}', [CitasController::class, 'getCitasByUserId']);
 Route::get('/get-cita-by-doctor-userid/{userId}', [CitasController::class, 'getCitasByDoctorUserId']);
-
 Route::post('/citas-change-status', [CitasController::class, 'updateStatus']);
 
+Route::apiResource('/medicamentos', MedicamentosController::class);
+
+Route::post('/save-treatment', [TratamientoController::class, 'saveTreatment']);
 
 
 
-
-Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 

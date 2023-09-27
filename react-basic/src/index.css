@@ -41,12 +41,16 @@ select:focus {
 textarea:focus {
     border-color: #5b08a7;
 }
+.dashboard-content{
+  margin-top: 80px;
+}
 
 .btn-submit, 
 .btn-add,
 .btn-edit,
 .btn-create,
 .btn-delete,
+.btn-search,
 .btn-block {
     font-family: "Roboto", sans-serif;
     outline: 0;
@@ -69,6 +73,7 @@ textarea:focus {
 .btn-create,
 .btn-add,
 .btn-edit,
+.btn-search,
 .btn-delete{
     padding: 0.5rem 0.75rem;
     font-size: 14px;
@@ -86,6 +91,9 @@ textarea:focus {
 .btn-edit{
     background-color: #937b00;
 }
+.btn-search{
+  background-color: #009696;
+}
 
 .btn-logout {
     text-decoration: none;
@@ -95,7 +103,7 @@ textarea:focus {
     border-radius: 6px;
 }
 .btn-logout:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(86, 81, 81, 0.1);
 }
 
 .btn-submit:hover,
@@ -106,6 +114,10 @@ textarea:focus {
 
 .text-center {
     text-align: center;
+}
+.userName{
+  margin-right: 30px;
+  font-size: 18px;
 }
 
 table {
@@ -265,7 +277,7 @@ table > tbody > tr > td {
 }
 .user-table{
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 }
 .btn-page{
@@ -528,9 +540,7 @@ margin-bottom: 20px;
     justify-content: center;
     flex-direction: column;
  }
- .modal-footer button{
-    width: 200px;
- }
+ 
  .modal-footer div a{
     text-decoration: underline;
  }
@@ -553,6 +563,16 @@ margin-bottom: 20px;
     color: #205af9 !important;
     font-size: 1.05rem;
   }
+  .faq{
+    margin-left: 100px;
+  }
+  
+  .faq-title{
+    cursor: pointer;
+}
+.faq-title:hover{
+  color: #006dda;
+}
   .hide-faq{
     max-height: 0;
     overflow: hidden;
@@ -645,11 +665,9 @@ margin-bottom: 20px;
   }
 
 
-  /*/////////////////Doctor Schedule ////////////////*/
+  /*/////////////////Doctor slots ////////////////*/
 
-  .schedule-header{
-    margin-top: 100px;
-  }
+ 
   #schedule {
  
     height: 50%;
@@ -706,10 +724,11 @@ margin-bottom: 20px;
     
     background: aquamarine;
     z-index: 1;
-    
+    border: 1px solid #ccc;
   }
   .free-slot{
-    border-top: 1px solid #ccc;
+    
+    border: 1px solid #ccc;
 
   }
   
@@ -723,3 +742,66 @@ margin-bottom: 20px;
     border-right: 1px solid #a8a8a8;
   }
 
+
+
+  /*/////////////////Doctor schedule ////////////////*/
+
+  .schedule-search{
+    width: 50%;
+  }
+  .checkbox-doctor input{
+    width: auto;
+    margin: auto !important;
+  }
+
+  .checkbox input{
+    width: fit-content;
+    margin:0 10px 30px 0 !important;
+  }
+  .d-names0{
+    margin-left: 95px;
+  }
+  .d-names{
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+.schedule-table{
+  margin-top: 15px;
+  
+}
+.calendar{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+
+/*/////////////////Consultorio form ////////////////*/
+
+.checkbox-consul{
+  
+  width: 50px;
+ 
+}
+
+/*/////////////////Citas doctor ////////////////*/
+
+.citas-doctor-select input{
+  width: auto;
+  margin: 0;
+}
+.treatment-list{
+  margin-top: 20px;
+}
+.treatment-list button:nth-child(2){
+margin-top: 20px;
+}
+.select{
+  display: grid;
+  grid-template-columns: 1fr 0.05fr 1fr;
+}
+
+/*/////////////////Citas paciente ////////////////*/
+
+.selected-tratamiento{
+  background-color: #009696;
+}

@@ -7,10 +7,11 @@ import SearchBar from './SearchBar'
 export default function Users() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
-  const {setMsg, search, setSearch} = useStateContext()
+  const {setMsg, search, setSearch, setPlaceholder} = useStateContext()
   const [links, setLinks] = useState([])
   
   useEffect(() => {
+    setPlaceholder("Ingrese el Email")
     getUsers()
     console.log(users)
   }, [])
@@ -65,10 +66,10 @@ export default function Users() {
     
 
   const pagination = () => {
-    return  links.map(l => (
+    return  links.map((l,i) => (
                   
 
-      <button disabled={!l.url || l.active} onClick={e => onPage(l.url)} className='btn-page'>
+      <button key={i} disabled={!l.url || l.active} onClick={e => onPage(l.url)} className='btn-page'>
         {l.label.replace('&laquo; Previous', 'Atras').replace('Next &raquo;', 'Siguiente')}</button>
       
 
@@ -77,11 +78,11 @@ export default function Users() {
 
   return (
     <div>
+      <h1>Users</h1>
       <div>
       {SearchBar()}
       </div>
     <div className='user-table'>
-      <h1>Users</h1>
       <Link to="/dashboard/user/new" className='btn-add'>Nuevo </Link>
     </div>
       <div className='card animated fateInDown'>

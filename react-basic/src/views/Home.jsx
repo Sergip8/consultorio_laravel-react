@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import axiosClient from '../axios-client'
-import Login from "./login";
+import Login from "./Login";
 import Signup from "./Signup";
 import userImg from "../assets/img/login.png";
 import carrusel1 from "../assets/img/carrusel1.jpg";
@@ -21,11 +21,12 @@ import { Carousel } from "react-responsive-carousel";
 
 import { useStateContext } from "../context/ContextProvider";
 import SpeSelect from "./speSelect";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const { showLogin, setShowLogin, showReg, setShowReg, user } = useStateContext();
   const [showFaq, setShowFaq] = useState(null)
+
 
   const logClose = () => setShowLogin(false);
   const logShow = () => {
@@ -121,12 +122,7 @@ export default function Home() {
             rel="stylesheet"
           />
 
-          <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-            crossOrigin="anonymous"
-          />
+          
           <title>Colmedicare</title>
         </div>
         <header className=" d-sm-flex py-3 ">
@@ -227,7 +223,9 @@ export default function Home() {
         <img src={menuIcon}/>
 <div  className="user-menu">
 
-  {user.role && <div>
+{user.role && <div>
+{ user.role.length>0 && <div>
+  
 {user.role[0].role === 'ADMIN' &&
 <Link to="/dashboard/users" > Panel</Link>
 }
@@ -236,6 +234,8 @@ export default function Home() {
 }
 {user.role[0].role === 'DOCTOR' &&
 <Link to="/medico" > Panel</Link>
+}
+</div> 
 }
   </div>
 }
@@ -285,7 +285,7 @@ export default function Home() {
               </div>
               <div>
                 <button className="btn btn-primary">
-                  <img src={faceIcon} width={30} height={30}/>
+                  <img src={faceIcon} width={30} height={30} />
                   Entrar con facebook
                 </button>
               </div>
@@ -358,11 +358,11 @@ export default function Home() {
               </div>
 ))}
             </div>
-            <div>
               
                 <h3>Preguntas Frecuentes</h3>
-                {faq.map((f,i) =>(<div key={i}  onClick={e => setShowFaq("faq"+i) }> 
-                  <h6>{f.title}</h6>
+            <div className="faq">
+                {faq.map((f,i) =>(<div key={i} className="my-3 " onClick={e => setShowFaq("faq"+i) }> 
+                  <h6 className="faq-title">{f.title}</h6>
                   <p className={showFaq === "faq"+i ? "show-faq": "hide-faq"}>
                     {f.res}
                   </p>

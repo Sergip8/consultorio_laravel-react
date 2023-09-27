@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date');
+            $table->dateTime('date');
             $table->integer('slot');
            
             $table->string('type');

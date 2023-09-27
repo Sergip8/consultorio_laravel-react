@@ -4,7 +4,7 @@ import { useStateContext } from '../context/ContextProvider'
 export default function SearchBar() {
 
     const searchRef = useRef()
-    const {setSearch} = useStateContext()
+    const {setSearch, placeholder} = useStateContext()
 
     const onSubmit = (e) =>{
         e.preventDefault()
@@ -13,8 +13,8 @@ export default function SearchBar() {
   return (
     <div>
         <form onSubmit={onSubmit}>
-        <input placeholder='Ingrese el numero de cedula' ref={searchRef} type="text" />
-        <button>Buscar</button>
+        <input placeholder={placeholder} ref={searchRef} type="text" />
+        <button className='btn-search'>Buscar</button>
         </form>
     </div>
   )
